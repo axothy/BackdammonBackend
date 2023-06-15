@@ -8,34 +8,36 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.IdentityHashMap;
 
-enum Winner {FIRST, SECOND}
-
 @Getter
 @Setter
+@Table(name = "game_history")
 public class GameHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GAME_ID")
+    @Column(name = "GAME_ID", nullable = false)
     private Long gameId;
 
-    @Column(name = "PLAYER_1")
+    @Column(name = "PLAYER_1", nullable = false)
     private String firstPlayerNickname;
 
-    @Column(name = "PLAYER_2")
+    @Column(name = "PLAYER_2", nullable = false)
     private String secondPlayerNickname;
 
-    @Column(name = "GAME_DATE")
+    @Column(name = "GAME_DATE", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date gameDate;
 
-    @Column(name = "WHO_WON")
-    private Winner winner;
+    @Column(name = "WINNER", nullable = false)
+    private String winnerNickname;
+
+    @Column(name = "BET", nullable = false)
+    private int bet;
 
 
     @Override
     public String toString() {
         return gameDate + ": " + firstPlayerNickname + " vs " + secondPlayerNickname +
-                ". Winner: " + (winner == Winner.FIRST ? firstPlayerNickname : secondPlayerNickname);
+                ". Bet: " + bet + ". Winner: " + winnerNickname;
     }
 }

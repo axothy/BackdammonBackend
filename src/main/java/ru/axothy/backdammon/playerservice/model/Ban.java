@@ -2,13 +2,13 @@ package ru.axothy.backdammon.playerservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 @Getter @Setter
 @Entity
+@Table(name = "bans")
 public class Ban {
 
     @Id
@@ -20,11 +20,11 @@ public class Ban {
     private String reason;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "BAN_DATE")
+    @Column(name = "BAN_DATE", nullable = false)
     private Date banDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "UNBAN_DATE")
+    @Column(name = "UNBAN_DATE", nullable = false)
     private Date unbanDate;
 
     @ManyToOne

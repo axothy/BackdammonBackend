@@ -35,7 +35,7 @@ public class Player {
     @Column(name = "BALANCE", nullable = false)
     private int balance;
 
-    @Column(name = "BANS_COUNT")
+    @Column(name = "BANS_COUNT", nullable = false)
     private int bansCount;
 
     @Temporal(TemporalType.DATE)
