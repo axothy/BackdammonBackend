@@ -47,7 +47,7 @@ public class GameHistoryServiceImpl implements GameHistoryService {
 
     @Override
     public Page<GameHistory> getGamesByDate(Date date, int page, int size) {
-        return gameHistoryRepository.findByDate(date, PageRequest.of(page, size));
+        return gameHistoryRepository.findByGameDate(date, PageRequest.of(page, size));
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.List;
 public interface GameHistoryRepository extends CrudRepository<GameHistory, Long> {
     Page<GameHistory> findByFirstPlayerNickname(String nickname, Pageable pageable);
     Page<GameHistory> findBySecondPlayerNickname(String nickname, Pageable pageable);
-    Page<GameHistory> findByDate(Date date, Pageable pageable);
+    Page<GameHistory> findByGameDate(Date date, Pageable pageable);
 
     Page<GameHistory> findAll(Pageable pageable);
 }

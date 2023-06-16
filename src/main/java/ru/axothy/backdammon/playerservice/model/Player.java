@@ -50,4 +50,10 @@ public class Player {
     @JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "PLAYER_ID"),
     inverseJoinColumns = @JoinColumn(name = "FRIEND_ID"))
     private Set<Friend> friends = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Player " + nickname + ", phone: " + phoneNumber + ", W/L: " + wins + "/" + loses +
+                ", balance: " + balance + " coins, " + bans + " bans, registration date: " + registrationDate;
+    }
 }

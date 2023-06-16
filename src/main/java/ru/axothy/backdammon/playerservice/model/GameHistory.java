@@ -10,6 +10,7 @@ import java.util.IdentityHashMap;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "game_history")
 public class GameHistory {
 

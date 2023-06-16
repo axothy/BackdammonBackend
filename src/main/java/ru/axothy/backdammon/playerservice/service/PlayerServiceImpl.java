@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.axothy.backdammon.playerservice.config.ServiceConfig;
 import ru.axothy.backdammon.playerservice.model.Ban;
+import ru.axothy.backdammon.playerservice.model.Friend;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
 

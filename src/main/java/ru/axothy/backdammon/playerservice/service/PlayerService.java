@@ -4,6 +4,7 @@ package ru.axothy.backdammon.playerservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import ru.axothy.backdammon.playerservice.model.Friend;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
 
