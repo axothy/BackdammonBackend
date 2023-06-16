@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "players")
 public class Player {
@@ -42,6 +43,11 @@ public class Player {
     @Column(name = "REGISTRATION_DATE", nullable = false)
     private Date registrationDate;
 
-    @OneToMany(mappedBy = "players", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "player")
     private Set<Ban> bans = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "PLAYER_ID"),
+    inverseJoinColumns = @JoinColumn(name = "FRIEND_ID"))
+    private Set<Friend> friends = new HashSet<>();
 }

@@ -1,4 +1,12 @@
 spring:
+  application:
+    name: player-service
+  profiles:
+    active: dev
+
   cloud:
     config:
-      enabled: false
+      uri: http://localhost:8071
+
+server:
+  port: 8080

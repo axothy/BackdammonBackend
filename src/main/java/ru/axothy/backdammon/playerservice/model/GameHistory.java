@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.bouncycastle.crypto.engines.IDEAEngine;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.IdentityHashMap;
 
 @Getter
