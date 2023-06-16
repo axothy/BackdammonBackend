@@ -8,13 +8,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.client.RestTemplate;
 import ru.axothy.backdammon.playerservice.model.Player;
+import ru.axothy.backdammon.playerservice.model.Players;
 
 import java.util.List;
 
 public class RestTestClient {
     private static final Logger logger = LoggerFactory.getLogger(RestTestClient.class);
-    private static final String URL_GET_ALL_PLAYERS = "http://localhost:8080/players/list";
-    private static final String URL_GET_USER_BY_ID = "http://localhost:8080/user/{id}";
+    private static final String URL_GET_ALL_PLAYERS = "http://localhost:8080/admin/players/list?page=0&size=5";
+    private static final String URL_GET_RICHEST_PLAYERS = "http://localhost:8080/players/balancetop?page=0&size=5";
+    private static final String URL_GET_BANNED_PLAYERS = "http://localhost:8080/players/banned?page=0&size=5";
+    private static final String URL_GET_TOPWINNERS_PLAYERS = "http://localhost:8080/players/topwinners?page=0&size=5";
+
+    private static final String URL_FIND_BY_ID = "http://localhost:8080/players/1";
     private static final String URL_DELETE_USER_BY_ID = "http://localhost:8080/user/{id}";
     private static final String URL_CREATE_USER = "http://localhost:8080/user/";
     private static final String URL_UPDATE_USER = "http://localhost:8080/user/{id}";
@@ -28,8 +33,15 @@ public class RestTestClient {
     @Test
     public void testFindAll() {
         logger.info("--> Testing findAll paginated:");
-        Page<Player> players = restTemplate.getForObject(URL_GET_ALL_PLAYERS, Page.class);
-        listAllPlayers(players.getContent());
+        Players players = restTemplate.getForObject(URL_GET_ALL_PLAYERS, Players.class);
+        listAllPlayers(players.getPlayers());
+    }
+
+    @Test
+    public void findById() {
+        logger.info("--> Testing findPlayerById:");
+        Player player = restTemplate.getForObject(URL_FIND_BY_ID, Player.class);
+        playerInfo(player);
     }
     /*
     @Test
@@ -82,14 +94,18 @@ public class RestTestClient {
     public static void listAllPlayers(List<Player> players) {
         logger.info(" ---- Listing all players:");
         for (Player player : players) {
-            logger.info(player.toString());
-            if (player.getBans() != null) {
-                logger.info("\t" + player.getBans().toString());
-            }
+            playerInfo(player);
+        }
+    }
 
-            if (player.getFriends() != null) {
-                logger.info("\t" + player.getBans().toString());
-            }
+    public static void playerInfo(Player player) {
+        logger.info(player.toString());
+        if (player.getBans() != null) {
+            logger.info("\t" + player.getBans().toString());
+        }
+
+        if (player.getFriends() != null) {
+            logger.info("\t" + player.getBans().toString());
         }
     }
 }

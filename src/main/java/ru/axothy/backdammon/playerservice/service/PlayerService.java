@@ -8,10 +8,11 @@ import ru.axothy.backdammon.playerservice.model.Friend;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PlayerService {
-    Player createPlayer(Player player);
+    Player create(Player player);
 
     Player getPlayerById(Long playerId);
 
@@ -19,7 +20,9 @@ public interface PlayerService {
 
     Player getPlayerByNickname(String nickname);
 
-    void deletePlayer(Long playerId);
+    void delete(Long playerId);
+
+    void banPlayer(String nickname, String reason, Date unbanDate);
 
     Page<Player> getRichestPlayers(int page, int size);
 

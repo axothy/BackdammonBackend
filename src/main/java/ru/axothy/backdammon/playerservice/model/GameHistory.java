@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bouncycastle.crypto.engines.IDEAEngine;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.IdentityHashMap;
 
@@ -12,7 +13,7 @@ import java.util.IdentityHashMap;
 @Setter
 @Entity
 @Table(name = "game_history")
-public class GameHistory {
+public class GameHistory implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

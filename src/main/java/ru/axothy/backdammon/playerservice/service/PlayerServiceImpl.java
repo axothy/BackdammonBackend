@@ -3,17 +3,17 @@ package ru.axothy.backdammon.playerservice.service;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.axothy.backdammon.playerservice.config.ServiceConfig;
 import ru.axothy.backdammon.playerservice.model.Ban;
-import ru.axothy.backdammon.playerservice.model.Friend;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +25,7 @@ public class PlayerServiceImpl implements PlayerService {
     private ServiceConfig config;
 
     @Override
-    public Player createPlayer(Player player) {
+    public Player create(Player player) {
         return playerRepository.save(player);
     }
 
@@ -45,19 +45,19 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void deletePlayer(Long playerId) {
+    public void delete(Long playerId) {
         Player player = getPlayerById(playerId);
         playerRepository.delete(player);
     }
 
     @Override
     public Page<Player> getRichestPlayers(int page, int size) {
-        return playerRepository.findAll(PageRequest.of(page, size, Sort.by("balance")));
+        return playerRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "balance")));
     }
 
     @Override
     public Page<Player> getTopPlayersByWins(int page, int size) {
-        return playerRepository.findAll(PageRequest.of(page, size, Sort.by("wins")));
+        return playerRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC,"wins")));
     }
 
     @Override
@@ -80,5 +80,18 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         return bannedPlayers;
+    }
+
+    @Override
+    public void banPlayer(String nickname, String reason, Date unbanDate) {
+        Player player = playerRepository.findByNickname(nickname);
+
+        Ban ban = new Ban();
+        ban.setPlayer(player);
+        ban.setReason(reason);
+        ban.setBanDate(new Date());
+        ban.setUnbanDate(unbanDate);
+
+        player.getBans().add(ban);
     }
 }
