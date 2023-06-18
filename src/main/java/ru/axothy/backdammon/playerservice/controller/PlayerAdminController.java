@@ -18,7 +18,7 @@ public class PlayerAdminController {
     private PlayerService playerService;
 
     @GetMapping(params = {"phone"})
-    public ResponseEntity<Player> getPlayerByPhoneNumber(@RequestParam("nickname") String phone) {
+    public ResponseEntity<Player> getPlayerByPhoneNumber(@RequestParam("phone") String phone) {
         Player player = playerService.getPlayerByPhoneNumber(phone);
 
         return ResponseEntity.ok(player);

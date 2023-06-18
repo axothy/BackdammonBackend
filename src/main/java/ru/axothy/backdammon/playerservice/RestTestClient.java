@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.model.Players;
 
+import java.util.Date;
 import java.util.List;
 
 public class RestTestClient {
@@ -20,9 +21,14 @@ public class RestTestClient {
     private static final String URL_GET_TOPWINNERS_PLAYERS = "http://localhost:8080/players/topwinners?page=0&size=5";
 
     private static final String URL_FIND_BY_ID = "http://localhost:8080/players/1";
-    private static final String URL_DELETE_USER_BY_ID = "http://localhost:8080/user/{id}";
-    private static final String URL_CREATE_USER = "http://localhost:8080/user/";
-    private static final String URL_UPDATE_USER = "http://localhost:8080/user/{id}";
+    private static final String URL_FIND_BY_NICKNAME = "http://localhost:8080/players?nickname=axothy";
+    private static final String URL_FIND_BY_PHONE = "http://localhost:8080/admin/players?phone=+79818648398";
+
+    private static final String URL_DELETE_PLAYER_BY_ID = "http://localhost:8080/admin/players/10";
+
+    private static final String URL_CREATE_PLAYER = "http://localhost:8080/admin/players";
+
+
     private RestTemplate restTemplate;
 
     @Before
@@ -43,21 +49,29 @@ public class RestTestClient {
         Player player = restTemplate.getForObject(URL_FIND_BY_ID, Player.class);
         playerInfo(player);
     }
-    /*
-    @Test
-    public void testFindById() {
-        logger.info("--> Testing findById:");
-        User user = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 4);
-        logger.info(user.toString());
-        Assert.assertEquals(user.getName(), "Коля");
-    }
 
     @Test
     public void testDeleteById() {
         logger.info("--> Testing deleteById:");
-        restTemplate.delete(URL_DELETE_USER_BY_ID, 5);
+        restTemplate.delete(URL_DELETE_PLAYER_BY_ID);
     }
 
+    @Test
+    public void createPlayer() {
+        logger.info("--> Testing createPlayer:");
+        Player player = new Player();
+        player.setNickname("Test1");
+        player.setBalance(0);
+        player.setWins(0);
+        player.setLoses(0);
+        player.setBansCount(0);
+        player.setPhoneNumber("79818648390");
+        player.setRegistrationDate(new Date());
+
+        restTemplate.postForObject(URL_CREATE_PLAYER, player, Player.class);
+    }
+
+    /*
     @Test
     public void testCreate() {
         logger.info("--> Testing create user");
