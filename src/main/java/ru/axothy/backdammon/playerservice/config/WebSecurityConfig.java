@@ -1,8 +1,5 @@
 package ru.axothy.backdammon.playerservice.config;
 
-import lombok.RequiredArgsConstructor;
-import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,6 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http.authorizeRequests()
                 .anyRequest().authenticated();
-        http.csrf().disable();
     }
 
     @Autowired
@@ -44,4 +40,5 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
+
 }

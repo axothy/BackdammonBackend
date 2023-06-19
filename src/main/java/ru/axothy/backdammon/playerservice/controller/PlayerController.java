@@ -9,6 +9,7 @@ import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.service.PlayerService;
 import org.springframework.http.HttpStatus;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,14 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    @RolesAllowed({"PLAYER", "ADMIN"})
     @GetMapping(value = "/{id}")
     public ResponseEntity<Player> getPlayerById(@PathVariable("id") Long playerId) {
         Player player = playerService.getPlayerById(playerId);
         return ResponseEntity.ok(player);
     }
 
-
+    @RolesAllowed({"PLAYER", "ADMIN"})
     @GetMapping(params = {"nickname"})
     public ResponseEntity<Player> getPlayerByNickname(@RequestParam("nickname") String nickname) {
         Player player = playerService.getPlayerByNickname(nickname);
@@ -31,6 +33,7 @@ public class PlayerController {
         return ResponseEntity.ok(player);
     }
 
+    @RolesAllowed({"PLAYER", "ADMIN"})
     @GetMapping(value = "/balancetop", params = {"page", "size"})
     public List<Player> getRichestPlayers(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Player> richest = playerService.getRichestPlayers(page, size);
@@ -42,12 +45,14 @@ public class PlayerController {
         return richest.getContent();
     }
 
+    @RolesAllowed({"ADMIN", "PLAYER"})
     @GetMapping(value = "/banned", params = {"page", "size"})
     public List<Player> getBannedPlayers(@RequestParam("page") int page, @RequestParam("size") int size) {
         return playerService.getBannedPlayers(page, size);
 
     }
 
+    @RolesAllowed({"ADMIN", "PLAYER"})
     @GetMapping(value = "/topwinners", params = {"page", "size"})
     public List<Player> getTopWinners(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Player> topwinners = playerService.getTopPlayersByWins(page, size);

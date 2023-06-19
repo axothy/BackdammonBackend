@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.service.PlayerService;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,7 @@ public class PlayerAdminController {
     @Autowired
     private PlayerService playerService;
 
+    @RolesAllowed("ADMIN")
     @GetMapping(params = {"phone"})
     public ResponseEntity<Player> getPlayerByPhoneNumber(@RequestParam("phone") String phone) {
         Player player = playerService.getPlayerByPhoneNumber(phone);
@@ -24,12 +26,14 @@ public class PlayerAdminController {
         return ResponseEntity.ok(player);
     }
 
+    @RolesAllowed("ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long playerId) {
         playerService.delete(playerId);
     }
 
+    @RolesAllowed("ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/")
     public Player create(@RequestBody Player player) {
@@ -37,6 +41,7 @@ public class PlayerAdminController {
         return player;
     }
 
+    @RolesAllowed("ADMIN")
     @GetMapping(value = "/list", params = {"page", "size"})
     public List<Player> getAllPlayers(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Player> players = playerService.getAllPlayers(page, size);

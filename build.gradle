@@ -38,10 +38,8 @@ dependencies {
 
     implementation group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'
 
-    implementation group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '21.0.2'
 
-
-
+    implementation group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '15.0.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 
 }
