@@ -25,13 +25,13 @@ public class BanServiceImpl implements BanService {
     }
 
     @Override
-    public void delete(Long banId) {
+    public void delete(int banId) {
         Ban ban = getBanById(banId);
         banRepository.delete(ban);
     }
 
     @Override
-    public Ban getBanById(Long banId) {
+    public Ban getBanById(int banId) {
         return banRepository.findById(banId).get();
     }
 

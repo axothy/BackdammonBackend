@@ -1,5 +1,6 @@
 package ru.axothy.backdammon.playerservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,8 +20,8 @@ public class Player implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PLAYER_ID", nullable = false)
-    private Long id;
+    @Column(name = "player_id", nullable = false)
+    private int id;
 
     @Column(name = "PHONE_NUMBER", nullable = false)
     private String phoneNumber;
@@ -44,7 +45,8 @@ public class Player implements Serializable {
     @Column(name = "REGISTRATION_DATE", nullable = false)
     private Date registrationDate;
 
-    @OneToMany(mappedBy = "player")
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Ban> bans = new HashSet<>();
 
     @ManyToMany

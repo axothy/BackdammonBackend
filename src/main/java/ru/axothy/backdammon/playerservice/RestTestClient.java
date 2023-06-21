@@ -3,30 +3,38 @@ package ru.axothy.backdammon.playerservice;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.model.Players;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class RestTestClient {
     private static final Logger logger = LoggerFactory.getLogger(RestTestClient.class);
-    private static final String URL_GET_ALL_PLAYERS = "http://localhost:8080/admin/players/list?page=0&size=5";
-    private static final String URL_GET_RICHEST_PLAYERS = "http://localhost:8080/players/balancetop?page=0&size=5";
-    private static final String URL_GET_BANNED_PLAYERS = "http://localhost:8080/players/banned?page=0&size=5";
-    private static final String URL_GET_TOPWINNERS_PLAYERS = "http://localhost:8080/players/topwinners?page=0&size=5";
+    private static final String URL_GET_ALL_PLAYERS = "http://localhost:8081/admin/players/list?page=0&size=5";
+    private static final String URL_GET_RICHEST_PLAYERS = "http://localhost:8081/players/balancetop?page=0&size=5";
+    private static final String URL_GET_BANNED_PLAYERS = "http://localhost:8081/players/banned?page=0&size=5";
+    private static final String URL_GET_TOPWINNERS_PLAYERS = "http://localhost:8081/players/topwinners?page=0&size=5";
+    private static final String URL_FIND_BY_ID = "http://localhost:8081/players/1";
+    private static final String URL_FIND_BY_NICKNAME = "http://localhost:8081/players?nickname=axothy";
+    private static final String URL_FIND_BY_PHONE = "http://localhost:8081/admin/players?phone=+79818648398";
+    private static final String URL_DELETE_PLAYER_BY_ID = "http://localhost:8081/admin/players/5";
 
-    private static final String URL_FIND_BY_ID = "http://localhost:8080/players/1";
-    private static final String URL_FIND_BY_NICKNAME = "http://localhost:8080/players?nickname=axothy";
-    private static final String URL_FIND_BY_PHONE = "http://localhost:8080/admin/players?phone=+79818648398";
+    private static final String URL_CREATE_PLAYER = "http://localhost:8081/admin/players/";
+    private static final String URL_UPDATE_PLAYER = "http://localhost:8081/admin/players/";
+    private static final String URL_BAN_PLAYER = "http://localhost:8081/admin/players/ban";
+    private static final String URL_CHANGE_BALANCE = "http://localhost:8081/admin/players/changebalance";
 
-    private static final String URL_DELETE_PLAYER_BY_ID = "http://localhost:8080/admin/players/10";
-
-    private static final String URL_CREATE_PLAYER = "http://localhost:8080/admin/players";
+    private static final String URL_CREATE_NEWBIE = "http://localhost:8081/admin/players/newbie";
 
 
     private RestTemplate restTemplate;
@@ -39,36 +47,118 @@ public class RestTestClient {
     @Test
     public void testFindAll() {
         logger.info("--> Testing findAll paginated:");
-        Players players = restTemplate.getForObject(URL_GET_ALL_PLAYERS, Players.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        HttpEntity request = new HttpEntity(headers);
+
+        Players players = restTemplate.exchange(URL_GET_ALL_PLAYERS, HttpMethod.GET, request, Players.class).getBody();
         listAllPlayers(players.getPlayers());
     }
 
     @Test
     public void findById() {
         logger.info("--> Testing findPlayerById:");
-        Player player = restTemplate.getForObject(URL_FIND_BY_ID, Player.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        HttpEntity request = new HttpEntity(headers);
+
+        Player player = restTemplate.exchange(URL_FIND_BY_ID, HttpMethod.GET, request, Player.class).getBody();
         playerInfo(player);
     }
 
     @Test
     public void testDeleteById() {
         logger.info("--> Testing deleteById:");
-        restTemplate.delete(URL_DELETE_PLAYER_BY_ID);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        HttpEntity request = new HttpEntity(headers);
+
+        restTemplate.exchange(URL_DELETE_PLAYER_BY_ID, HttpMethod.DELETE, request, Void.class);
     }
 
     @Test
     public void createPlayer() {
         logger.info("--> Testing createPlayer:");
         Player player = new Player();
-        player.setNickname("Test1");
+        player.setNickname("Test2");
         player.setBalance(0);
         player.setWins(0);
         player.setLoses(0);
         player.setBansCount(0);
-        player.setPhoneNumber("79818648390");
+        player.setPhoneNumber("79818648396");
         player.setRegistrationDate(new Date());
+        player.setBans(new HashSet<>());
 
-        restTemplate.postForObject(URL_CREATE_PLAYER, player, Player.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Player> requestEntity = new HttpEntity<>(player, headers);
+
+        Player newPlayer = restTemplate.exchange(URL_CREATE_PLAYER, HttpMethod.POST, requestEntity, Player.class).getBody();
+        playerInfo(newPlayer);
+    }
+
+    @Test
+    public void updatePlayer() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        HttpEntity request = new HttpEntity(headers);
+
+        Player player = restTemplate.exchange(URL_FIND_BY_ID, HttpMethod.GET, request, Player.class).getBody();
+        player.setBalance(2);
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Player> requestEntity = new HttpEntity<>(player, headers);
+        Player newPlayer = restTemplate.exchange(URL_UPDATE_PLAYER, HttpMethod.POST, requestEntity, Player.class).getBody();
+
+    }
+
+    @Test
+    public void banPlayer() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL_BAN_PLAYER)
+                .queryParam("nickname", "axothy1")
+                .queryParam("reason", "cheater!")
+                .queryParam("unbanDate", "2023-06-22");
+        HttpEntity request = new HttpEntity(headers);
+
+        String response = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, request, String.class).getBody();
+
+    }
+
+    @Test
+    public void changeBalance() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL_CHANGE_BALANCE)
+                .queryParam("nickname", "axothy1")
+                .queryParam("amount", "-15");
+        HttpEntity request = new HttpEntity(headers);
+
+        String response = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, request, String.class).getBody();
+
+    }
+
+    @Test
+    public void createNewbie() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAdminToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL_CREATE_NEWBIE)
+                .queryParam("nickname", "axothy_newbie")
+                .queryParam("phone", "79818648389");
+        HttpEntity request = new HttpEntity(headers);
+
+        Player player = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, request, Player.class).getBody();
+
     }
 
     /*
@@ -121,5 +211,18 @@ public class RestTestClient {
         if (player.getFriends() != null) {
             logger.info("\t" + player.getBans().toString());
         }
+    }
+
+    private String getAdminToken() {
+        Keycloak keycloak = KeycloakBuilder.builder().serverUrl("http://95.163.242.217:8080")
+                .grantType("password")
+                .realm("backdammon-realm")
+                .clientId("player-service")
+                .clientSecret("x")
+                .username("admin")
+                .password("x")
+                .build();
+
+        return keycloak.tokenManager().getAccessTokenString();
     }
 }

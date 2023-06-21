@@ -15,7 +15,7 @@ public class Friend implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FRIEND_ID", nullable = false)
-    private Long friendId;
+    private int friendId;
 
     @Column(name = "REAL_NICKNAME", nullable = false)
     private String realNickname;

@@ -20,7 +20,7 @@ public class PlayerController {
 
     @RolesAllowed({"PLAYER", "ADMIN"})
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Player> getPlayerById(@PathVariable("id") Long playerId) {
+    public ResponseEntity<Player> getPlayerById(@PathVariable("id") int playerId) {
         Player player = playerService.getPlayerById(playerId);
         return ResponseEntity.ok(player);
     }
@@ -29,7 +29,6 @@ public class PlayerController {
     @GetMapping(params = {"nickname"})
     public ResponseEntity<Player> getPlayerByNickname(@RequestParam("nickname") String nickname) {
         Player player = playerService.getPlayerByNickname(nickname);
-
         return ResponseEntity.ok(player);
     }
 

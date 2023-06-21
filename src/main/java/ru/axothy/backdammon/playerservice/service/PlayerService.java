@@ -14,15 +14,25 @@ import java.util.List;
 public interface PlayerService {
     Player create(Player player);
 
-    Player getPlayerById(Long playerId);
+    Player createNewbie(String nickname, String phoneNumber);
+
+    Player update(Player player);
+
+    Player getPlayerById(int playerId);
 
     Player getPlayerByPhoneNumber(String phoneNumber);
 
     Player getPlayerByNickname(String nickname);
 
-    void delete(Long playerId);
+    void delete(int playerId);
 
-    void banPlayer(String nickname, String reason, Date unbanDate);
+    void banPlayer(int playerId, String reason, Date unbanDate);
+
+    void changeBalance(int playerId, int amount);
+
+    void addWin(int playerId);
+
+    void addLose(int playerId);
 
     Page<Player> getRichestPlayers(int page, int size);
 

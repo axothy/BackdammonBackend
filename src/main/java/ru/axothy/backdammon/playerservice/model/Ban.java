@@ -1,5 +1,6 @@
 package ru.axothy.backdammon.playerservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class Ban implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BAN_ID", nullable = false)
-    private Long banId;
+    private int banId;
 
     @Column(name = "REASON")
     private String reason;
@@ -29,8 +30,9 @@ public class Ban implements Serializable {
     @Column(name = "UNBAN_DATE", nullable = false)
     private Date unbanDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PLAYER_ID")
+    @JsonBackReference
     private Player player;
 
     @Override

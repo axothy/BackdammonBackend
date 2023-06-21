@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface GameHistoryRepository extends CrudRepository<GameHistory, Long> {
+public interface GameHistoryRepository extends CrudRepository<GameHistory, Integer> {
     Page<GameHistory> findByFirstPlayerNickname(String nickname, Pageable pageable);
     Page<GameHistory> findBySecondPlayerNickname(String nickname, Pageable pageable);
     Page<GameHistory> findByGameDate(Date date, Pageable pageable);

@@ -10,8 +10,8 @@ import java.util.List;
 public interface BanService {
 
     Ban create(Ban ban);
-    void delete(Long banId);
-    Ban getBanById(Long banId);
+    void delete(int banId);
+    Ban getBanById(int banId);
     Page<Ban> getLatestBans(int page, int size);
     List<Ban> getBansByPlayer(Player player);
 

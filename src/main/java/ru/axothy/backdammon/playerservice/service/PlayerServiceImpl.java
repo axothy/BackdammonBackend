@@ -11,10 +11,7 @@ import ru.axothy.backdammon.playerservice.model.Ban;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -30,7 +27,12 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player getPlayerById(Long playerId) {
+    public Player update(Player player) {
+        return playerRepository.save(player);
+    }
+
+    @Override
+    public Player getPlayerById(int playerId) {
         return playerRepository.findById(playerId).get();
     }
 
@@ -45,7 +47,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void delete(Long playerId) {
+    public void delete(int playerId) {
         Player player = getPlayerById(playerId);
         playerRepository.delete(player);
     }
@@ -83,8 +85,25 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void banPlayer(String nickname, String reason, Date unbanDate) {
-        Player player = playerRepository.findByNickname(nickname);
+    public Player createNewbie(String nickname, String phoneNumber) {
+        Player player = new Player();
+        player.setNickname(nickname);
+        player.setPhoneNumber(phoneNumber);
+        player.setBalance(0);
+        player.setWins(0);
+        player.setLoses(0);
+        player.setBansCount(0);
+        player.setBans(new HashSet<>());
+        player.setRegistrationDate(new Date());
+        player.setFriends(new HashSet<>());
+
+        playerRepository.save(player);
+        return player;
+    }
+
+    @Override
+    public void banPlayer(int playerId, String reason, Date unbanDate) {
+        Player player = getPlayerById(playerId);
 
         Ban ban = new Ban();
         ban.setPlayer(player);
@@ -92,6 +111,32 @@ public class PlayerServiceImpl implements PlayerService {
         ban.setBanDate(new Date());
         ban.setUnbanDate(unbanDate);
 
+        player.setBansCount(player.getBansCount() + 1);
         player.getBans().add(ban);
+        playerRepository.save(player);
+    }
+
+
+    @Override
+    public void changeBalance(int playerId, int amount) {
+        Player player = getPlayerById(playerId);
+
+        player.setBalance(player.getBalance() + amount);
+
+        if (player.getBalance() < 0) player.setBalance(0);
+
+        playerRepository.save(player);
+    }
+
+    @Override
+    public void addWin(int playerId) {
+        Player player = getPlayerById(playerId);
+        player.setWins(player.getWins() + 1);
+    }
+
+    @Override
+    public void addLose(int playerId) {
+        Player player = getPlayerById(playerId);
+        player.setWins(player.getLoses() + 1);
     }
 }

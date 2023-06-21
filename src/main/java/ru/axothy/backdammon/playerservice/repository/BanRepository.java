@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface BanRepository extends CrudRepository<Ban, Long> {
+public interface BanRepository extends CrudRepository<Ban, Integer> {
     Page<Ban> findAll(Pageable pageable);
     List<Ban> findByPlayer(Player player);
 

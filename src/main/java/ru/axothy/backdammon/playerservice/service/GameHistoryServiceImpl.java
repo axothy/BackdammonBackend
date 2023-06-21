@@ -23,13 +23,13 @@ public class GameHistoryServiceImpl implements GameHistoryService {
     }
 
     @Override
-    public void delete(Long gameId) {
+    public void delete(int gameId) {
         GameHistory game = getGameById(gameId);
         gameHistoryRepository.delete(game);
     }
 
     @Override
-    public GameHistory getGameById(Long id) {
+    public GameHistory getGameById(int id) {
         return gameHistoryRepository.findById(id).get();
     }
 

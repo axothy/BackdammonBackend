@@ -18,7 +18,7 @@ public class GameHistory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GAME_ID", nullable = false)
-    private Long gameId;
+    private int gameId;
 
     @Column(name = "PLAYER_1", nullable = false)
     private String firstPlayerNickname;

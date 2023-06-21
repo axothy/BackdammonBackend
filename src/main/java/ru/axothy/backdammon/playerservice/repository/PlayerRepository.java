@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.axothy.backdammon.playerservice.model.Player;
 
 @Repository
-public interface PlayerRepository extends CrudRepository<Player, Long> {
+public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
     Page<Player> findAll(Pageable pageable);
     public Player findByPhoneNumber(String phoneNumber);

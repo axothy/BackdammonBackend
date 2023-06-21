@@ -9,9 +9,9 @@ import java.util.List;
 public interface GameHistoryService {
 
     GameHistory create(GameHistory gameHistory);
-    void delete(Long gameId);
+    void delete(int gameId);
 
-    GameHistory getGameById(Long id);
+    GameHistory getGameById(int id);
 
     List<GameHistory> getGamesByNickname(String nickname, int page, int size);
 
