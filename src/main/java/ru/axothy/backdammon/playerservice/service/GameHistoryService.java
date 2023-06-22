@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GameHistoryService {
 
-    GameHistory create(GameHistory gameHistory);
+    GameHistory create(String nickname1, String nickname2, String winnerNickname, int bet);
     void delete(int gameId);
 
     GameHistory getGameById(int id);

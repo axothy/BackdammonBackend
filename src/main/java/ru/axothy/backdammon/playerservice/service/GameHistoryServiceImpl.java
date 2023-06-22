@@ -18,8 +18,16 @@ public class GameHistoryServiceImpl implements GameHistoryService {
     private GameHistoryRepository gameHistoryRepository;
 
     @Override
-    public GameHistory create(GameHistory gameHistory) {
-        return gameHistoryRepository.save(gameHistory);
+    public GameHistory create(String nickname1, String nickname2, String winnerNickname, int bet) {
+        GameHistory game = new GameHistory();
+
+        game.setFirstPlayerNickname(nickname1);
+        game.setSecondPlayerNickname(nickname2);
+        game.setBet(bet);
+        game.setWinnerNickname(winnerNickname);
+        game.setGameDate(new Date());
+
+        return gameHistoryRepository.save(game);
     }
 
     @Override

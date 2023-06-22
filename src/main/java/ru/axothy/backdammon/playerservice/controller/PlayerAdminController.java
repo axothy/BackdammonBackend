@@ -72,7 +72,7 @@ public class PlayerAdminController {
                                             @RequestParam("unbanDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date unbanDate) {
         Player player = playerService.getPlayerByNickname(nickname);
         if (player == null) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Игрок с таким ником не найден");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Игрок с таким ником не найден");
         }
 
         playerService.banPlayer(player.getId(), reason, unbanDate);
@@ -84,7 +84,7 @@ public class PlayerAdminController {
     public ResponseEntity<String> changeBalance(@RequestParam("nickname") String nickname, @RequestParam("amount") int amount) {
         Player player = playerService.getPlayerByNickname(nickname);
         if (player == null) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Игрок с таким ником не найден");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Игрок с таким ником не найден");
         }
 
         playerService.changeBalance(player.getId(), amount);

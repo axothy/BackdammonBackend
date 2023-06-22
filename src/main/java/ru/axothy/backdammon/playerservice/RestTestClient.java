@@ -161,40 +161,6 @@ public class RestTestClient {
 
     }
 
-    /*
-    @Test
-    public void testCreate() {
-        logger.info("--> Testing create user");
-        User newUser = new User();
-        newUser.setName("BB");
-        newUser.setBirthDate(new Date(
-                (new GregorianCalendar(1940, 8, 16)).getTime().getTime()));
-
-        ActiveStatus activeStatus = new ActiveStatus();
-        activeStatus.setStatus("test_status");
-        newUser.setActiveStatus(activeStatus);
-        newUser = restTemplate.postForObject(URL_CREATE_USER, newUser, User.class);
-        logger.info("Singer created successfully: " + newUser);
-    }
-
-    @Test
-    public void testUpdate() {
-        logger.info("--> Testing update user");
-        User user = restTemplate.getForObject(URL_GET_USER_BY_ID, User.class, 1);
-        user.setName("Миша Иванов");
-
-        restTemplate.put(URL_UPDATE_USER, user, 1);
-        logger.info("User updated successfully");
-    }
-     */
-
-    /**
-     * Список всех учеников со всеми связями. Для тех, кто будет тестировать через JUnit:
-     * можно использовать данный метод в тестах, каждая сущность содержит полноценное
-     * описание в toString().
-     *
-     * @param players
-     */
     public static void listAllPlayers(List<Player> players) {
         logger.info(" ---- Listing all players:");
         for (Player player : players) {
@@ -218,9 +184,9 @@ public class RestTestClient {
                 .grantType("password")
                 .realm("backdammon-realm")
                 .clientId("player-service")
-                .clientSecret("x")
+                .clientSecret("00c058ea-55d3-4254-ac1f-fd2bbf875cc8")
                 .username("admin")
-                .password("x")
+                .password("Maver2281337")
                 .build();
 
         return keycloak.tokenManager().getAccessTokenString();
