@@ -21,6 +21,8 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private ServiceConfig config;
 
+    private static final int INITIAL_BALANCE = 500;
+
     @Override
     public Player create(Player player) {
         return playerRepository.save(player);
@@ -89,7 +91,7 @@ public class PlayerServiceImpl implements PlayerService {
         Player player = new Player();
         player.setNickname(nickname);
         player.setPhoneNumber(phoneNumber);
-        player.setBalance(0);
+        player.setBalance(INITIAL_BALANCE);
         player.setWins(0);
         player.setLoses(0);
         player.setBansCount(0);
