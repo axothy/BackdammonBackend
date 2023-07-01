@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.axothy.backdammon.playerservice.config.ServiceConfig;
 import ru.axothy.backdammon.playerservice.model.Ban;
 import ru.axothy.backdammon.playerservice.model.Player;
 import ru.axothy.backdammon.playerservice.repository.PlayerRepository;
@@ -17,9 +16,6 @@ import java.util.*;
 public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
-
-    @Autowired
-    private ServiceConfig config;
 
     private static final int INITIAL_BALANCE = 500;
 
@@ -140,5 +136,11 @@ public class PlayerServiceImpl implements PlayerService {
     public void addLose(int playerId) {
         Player player = getPlayerById(playerId);
         player.setWins(player.getLoses() + 1);
+    }
+
+    @Override
+    public int getBalance(String nickname) {
+        Player player = getPlayerByNickname(nickname);
+        return player.getBalance();
     }
 }

@@ -30,6 +30,8 @@ public interface PlayerService {
 
     void changeBalance(int playerId, int amount);
 
+    int getBalance(String nickname);
+
     void addWin(int playerId);
 
     void addLose(int playerId);

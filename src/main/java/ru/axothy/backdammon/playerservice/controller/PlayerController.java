@@ -52,6 +52,13 @@ public class PlayerController {
     }
 
     @RolesAllowed({"ADMIN", "PLAYER"})
+    @GetMapping(value = "/balance")
+    public int getBalanceByPlayer(@RequestParam String nickname) {
+        return playerService.getBalance(nickname);
+
+    }
+
+    @RolesAllowed({"ADMIN", "PLAYER"})
     @GetMapping(value = "/topwinners", params = {"page", "size"})
     public List<Player> getTopWinners(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Player> topwinners = playerService.getTopPlayersByWins(page, size);
