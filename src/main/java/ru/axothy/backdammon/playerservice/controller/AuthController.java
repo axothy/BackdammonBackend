@@ -1,6 +1,7 @@
 package ru.axothy.backdammon.playerservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class AuthController {
 
     @PostMapping(value = "/auth/login", params = {"username", "password"})
     @PreAuthorize("permitAll()")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        authService.login(username, password);
-        return ResponseEntity.status(HttpStatus.OK).body("AUTHORIZED SUCCESSFULLY");
+    public ResponseEntity<AccessTokenResponse> login(@RequestParam String username, @RequestParam String password) {
+        AccessTokenResponse token = authService.login(username, password);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }
