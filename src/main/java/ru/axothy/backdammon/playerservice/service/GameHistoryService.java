@@ -18,4 +18,6 @@ public interface GameHistoryService {
     Page<GameHistory> getGamesByDate(Date date, int page, int size);
 
     Page<GameHistory> getLatestGames(int page, int size);
+
+    long count();
 }

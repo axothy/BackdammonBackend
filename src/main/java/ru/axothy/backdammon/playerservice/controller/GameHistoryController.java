@@ -2,6 +2,7 @@ package ru.axothy.backdammon.playerservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.axothy.backdammon.playerservice.model.GameHistory;
 import ru.axothy.backdammon.playerservice.service.GameHistoryService;
@@ -18,8 +19,15 @@ public class GameHistoryController {
 
     @RolesAllowed({"PLAYER", "ADMIN"})
     @GetMapping(value = "/game/{id}")
-    public GameHistory getLatest(@PathVariable int id) {
+    public GameHistory getGameById(@PathVariable int id) {
         return historyService.getGameById(id);
+    }
+
+    @RolesAllowed({"PLAYER", "ADMIN"})
+    @GetMapping(value = "/count")
+    public ResponseEntity<Long> getGamesCount() {
+        long count = historyService.count();
+        return ResponseEntity.ok(count);
     }
 
     @RolesAllowed({"PLAYER", "ADMIN"})

@@ -31,6 +31,11 @@ public class GameHistoryServiceImpl implements GameHistoryService {
     }
 
     @Override
+    public long count() {
+        return gameHistoryRepository.count();
+    }
+
+    @Override
     public void delete(int gameId) {
         GameHistory game = getGameById(gameId);
         gameHistoryRepository.delete(game);
