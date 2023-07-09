@@ -80,7 +80,7 @@ public class PlayerAdminController {
     }
 
     @RolesAllowed("ADMIN")
-    @PutMapping(value = "/changebalance")
+    @PutMapping(value = "/changebalance", params = {"nickname", "amount"})
     public ResponseEntity<String> changeBalance(@RequestParam("nickname") String nickname, @RequestParam("amount") int amount) {
         Player player = playerService.getPlayerByNickname(nickname);
         if (player == null) {
